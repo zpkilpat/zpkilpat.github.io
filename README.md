@@ -1,2 +1,0 @@
-# zpkilpat.github.io
-website
