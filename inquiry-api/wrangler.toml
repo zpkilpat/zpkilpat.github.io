@@ -1,0 +1,21 @@
+name = "inquiry-draft-api"
+main = "src/worker.ts"
+compatibility_date = "2026-09-16"
+compatibility_flags = ["nodejs_compat"]
+
+# Public, non-secret configuration.
+[vars]
+ALLOWED_ORIGIN = "https://zpkilpat.github.io"
+NOTIFY_TO = "zpkilpat@colorado.edu"
+NOTIFY_FROM = "site@example.com"   # must be a verified sender on your Resend domain
+
+# Optional rate limiting. Create with:
+#   wrangler kv namespace create RATE_LIMIT
+# then paste the id here and uncomment.
+# [[kv_namespaces]]
+# binding = "RATE_LIMIT"
+# id = "<paste-id>"
+
+# Secrets are NOT set here. Run:
+#   wrangler secret put ANTHROPIC_API_KEY
+#   wrangler secret put RESEND_API_KEY
