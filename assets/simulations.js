@@ -1,4 +1,5 @@
-import {normal,wrap,driftStep,bumpStep,socialBeliefStep,mean,stdev,TAU} from './models.mjs?v=7';
+(function(){
+const {normal,wrap,driftStep,bumpStep,socialBeliefStep,mean,stdev,TAU}=Models;
 const $=id=>document.getElementById(id),val=id=>Number($(id).value),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const colors=['#d8bd82','#8fb8a6','#c08a3e','#c9d2ae'];
 const sims={};
@@ -53,3 +54,4 @@ let last=0,acc=0,frameCount=0;
 function safely(s,fn){try{fn()}catch(err){if(!s.broken){s.broken=true;console.error(`simulation "${s.id}" stopped:`,err)}}}
 function frame(now){const dt=Math.min((now-last)/1000,.05);last=now;if(!document.hidden){acc+=dt;while(acc>=1/60){for(const s of Object.values(sims))if(s.playing&&!s.broken)safely(s,()=>s.step(s,1/60));acc-=1/60}if(++frameCount%2===0)for(const s of Object.values(sims))if(!s.broken)safely(s,()=>s.draw(s))}requestAnimationFrame(frame)}requestAnimationFrame(frame);
 document.documentElement.dataset.simsReady='1';
+})();

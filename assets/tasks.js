@@ -1,4 +1,5 @@
-import {normal,circularError,patchProbability} from './models.mjs?v=7';
+(function(){
+const {normal,circularError,patchProbability}=Models;
 const $=id=>document.getElementById(id),val=id=>Number($(id).value);
 // Timed delayed-estimation trials. Target hue is never exposed in response controls.
 let target=0,phase='idle',timer=null,trials=0,totalError=0;
@@ -22,3 +23,4 @@ $('harvest').addEventListener('click',()=>{lockPatch();const success=Math.random
 $('leave').addEventListener('click',()=>{lockPatch();elapsed+=val('travel');harvests=0;patches++;renderPatch();$('foraging-status').textContent=`Traveled for ${val('travel')} seconds. Patch ${patches} is fresh.`});
 $('foraging-reset').addEventListener('click',()=>{harvests=food=elapsed=0;patches=1;$('travel').disabled=false;$('depletion').disabled=false;renderPatch();$('foraging-status').textContent='New session. Adjust the settings before your first action.'});renderPatch();
 document.documentElement.dataset.tasksReady='1';
+})();
