@@ -52,3 +52,4 @@ setup('memory',s=>{s.theta=.7;s.history=[];s.t=0},(s,dt)=>{s.t+=dt;s.theta=bumpS
 let last=0,acc=0,frameCount=0;
 function safely(s,fn){try{fn()}catch(err){if(!s.broken){s.broken=true;console.error(`simulation "${s.id}" stopped:`,err)}}}
 function frame(now){const dt=Math.min((now-last)/1000,.05);last=now;if(!document.hidden){acc+=dt;while(acc>=1/60){for(const s of Object.values(sims))if(s.playing&&!s.broken)safely(s,()=>s.step(s,1/60));acc-=1/60}if(++frameCount%2===0)for(const s of Object.values(sims))if(!s.broken)safely(s,()=>s.draw(s))}requestAnimationFrame(frame)}requestAnimationFrame(frame);
+document.documentElement.dataset.simsReady='1';

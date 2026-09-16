@@ -21,3 +21,4 @@ function lockPatch(){ $('travel').disabled=true;$('depletion').disabled=true;}
 $('harvest').addEventListener('click',()=>{lockPatch();const success=Math.random()<patchProbability(harvests,val('depletion'));if(success)food++;harvests++;elapsed++;renderPatch();$('foraging-status').textContent=`${success?'Found one food item.':'No food this harvest.'} Patch ${patches} · ${harvests} harvests. Stay or move on?`});
 $('leave').addEventListener('click',()=>{lockPatch();elapsed+=val('travel');harvests=0;patches++;renderPatch();$('foraging-status').textContent=`Traveled for ${val('travel')} seconds. Patch ${patches} is fresh.`});
 $('foraging-reset').addEventListener('click',()=>{harvests=food=elapsed=0;patches=1;$('travel').disabled=false;$('depletion').disabled=false;renderPatch();$('foraging-status').textContent='New session. Adjust the settings before your first action.'});renderPatch();
+document.documentElement.dataset.tasksReady='1';
