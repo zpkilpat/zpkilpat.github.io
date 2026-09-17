@@ -34,3 +34,4 @@
    wraps mid-name and the separators stop marking boundaries. */
 .faculty-contact .affiliations ul{list-style:none;margin:5px 0 0;padding:0}
 .faculty-contact .affiliations li{padding:2px 0 2px 9px;text-indent:-9px;line-height:1.5}
+.academic .people-grid .project{font-size:13px;color:var(--ink);margin-top:6px;line-height:1.5;max-width:30ch}
