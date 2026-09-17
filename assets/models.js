@@ -15,5 +15,6 @@ function mean(a){return a.length?a.reduce((s,v)=>s+v,0)/a.length:0}
 function stdev(a){if(a.length<2)return 0;const m=mean(a);return Math.sqrt(a.reduce((s,v)=>s+(v-m)**2,0)/(a.length-1))}
 // Social foraging: private evidence about the patch, plus diffusive coupling to co-located foragers.
 function socialBeliefStep(x,patchMean,drift,coupling,sigma,dt,z){return x+(drift+coupling*(patchMean-x))*dt+sigma*Math.sqrt(dt)*z}
-return {TAU,normal,wrap,circularError,driftStep,bumpStep,alignmentOrder,patchProbability,periodicDelta,mean,stdev,socialBeliefStep};
+function glazeUpdate(L,h){const r=Math.log((1-h)/h);return L+Math.log(Math.exp(r)+Math.exp(-L))-Math.log(Math.exp(r)+Math.exp(L))}
+return {glazeUpdate,TAU,normal,wrap,circularError,driftStep,bumpStep,alignmentOrder,patchProbability,periodicDelta,mean,stdev,socialBeliefStep};
 })();
