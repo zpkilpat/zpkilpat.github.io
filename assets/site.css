@@ -35,3 +35,8 @@
 .faculty-contact .affiliations ul{list-style:none;margin:5px 0 0;padding:0}
 .faculty-contact .affiliations li{padding:2px 0 2px 9px;text-indent:-9px;line-height:1.5}
 .academic .people-grid .project{font-size:13px;color:var(--ink);margin-top:6px;line-height:1.5;max-width:30ch}
+/* The intro prose and the service list were side by side, so the shorter
+   column left a large gap beneath it. Stack them; the list takes the width. */
+.academic .consulting-intro{grid-template-columns:1fr;gap:30px}
+.academic .service-list{display:grid;grid-template-columns:1fr 1fr;gap:0 48px;align-items:start}
+@media(max-width:700px){.academic .service-list{grid-template-columns:1fr}}
