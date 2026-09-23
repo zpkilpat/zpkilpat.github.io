@@ -44,3 +44,6 @@
 /* close the bottom edge of the people grid: the cards use border-top, so the last card in each column has no line beneath it */
 .academic .people-grid article:nth-last-child(-n+3){border-bottom:1px solid var(--line)}
 @media(max-width:850px){.academic .people-grid article:nth-last-child(-n+3){border-bottom:none}.academic .people-grid article:nth-last-child(-n+2){border-bottom:1px solid var(--line)}}
+
+.academic .joining p{max-width:none;margin-bottom:20px}
+.academic .joining p:last-child{margin-bottom:0}
