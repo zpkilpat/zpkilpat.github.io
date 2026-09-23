@@ -38,5 +38,5 @@
 /* The intro prose and the service list were side by side, so the shorter
    column left a large gap beneath it. Stack them; the list takes the width. */
 .academic .consulting-intro{grid-template-columns:1fr;gap:30px}
-.academic .service-list{display:grid;grid-template-columns:1fr 1fr;gap:0 48px;align-items:start}
-@media(max-width:700px){.academic .service-list{grid-template-columns:1fr}}
+.academic .service-list{display:grid;grid-template-columns:1fr;align-items:start}.academic .service-list article>h3{flex:0 0 300px;margin-bottom:0}.academic .service-list article>div{flex:1;min-width:0}
+@media(max-width:700px){.academic .service-list article{display:block}.academic .service-list article>h3{margin-bottom:10px}}
