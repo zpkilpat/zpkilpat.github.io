@@ -6,8 +6,8 @@ compatibility_flags = ["nodejs_compat"]
 # Public, non-secret configuration.
 [vars]
 ALLOWED_ORIGIN = "https://zpkilpat.github.io"
-NOTIFY_TO = "zpkilpat@colorado.edu"
-NOTIFY_FROM = "site@example.com"   # must be a verified sender on your Resend domain
+NOTIFY_TO = "zacharykilpatrick@gmail.com"   # must be the address the Resend account is registered to
+NOTIFY_FROM = "onboarding@resend.dev"   # Resend's shared sender; only delivers to NOTIFY_TO. Swap for a verified sender if you get a domain.
 
 # Optional rate limiting. Create with:
 #   wrangler kv namespace create RATE_LIMIT
