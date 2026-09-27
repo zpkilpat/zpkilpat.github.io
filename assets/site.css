@@ -47,3 +47,8 @@
 
 .academic .joining p{max-width:none;margin-bottom:20px}
 .academic .joining p:last-child{margin-bottom:0}
+
+.academic .job-list{margin:0;padding-left:1.1em;color:var(--muted);font-size:15px}
+.academic .job-list li{margin-bottom:9px}
+.academic .job-list li:last-child{margin-bottom:0}
+.academic .jump-to-inquiry{margin-top:16px;font-size:15px}
