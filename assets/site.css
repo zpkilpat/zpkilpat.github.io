@@ -52,3 +52,5 @@
 .academic .job-list li{margin-bottom:9px}
 .academic .job-list li:last-child{margin-bottom:0}
 .academic .jump-to-inquiry{margin-top:16px;font-size:15px}
+.academic .theme-row{align-items:start}.academic .theme-row>div:first-child{position:sticky;top:24px}@media(max-width:600px){.academic .theme-row>div:first-child{position:static}}
+.hero-band{padding-top:0;padding-bottom:34px}.hero-band figure{margin:0}.hero-band canvas{display:block;width:100%;aspect-ratio:5.4/1;background:var(--dark);border-radius:2px}.hero-band figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:20px;font-size:12px;color:var(--muted);margin-top:10px}@media(max-width:600px){.hero-band canvas{aspect-ratio:2.4/1}.hero-band figcaption{display:block}.hero-band figcaption a{display:block;margin-top:6px}}
