@@ -8,47 +8,6 @@ function bg(s){s.ctx.fillStyle='#1f3a31';s.ctx.fillRect(0,0,800,430);s.ctx.strok
 setup('decisions',s=>{s.t=0;s.state=1;s.perfect=0;s.norm=0;s.trace=[];s.pOK=0;s.nOK=0;s.n=0;s.wait=0},(s,dt)=>{s.t+=dt;const h=val('world-change')*dt,ha=Math.max(1e-6,val('assumed-change')*dt);if(val('world-change')>0&&Math.random()<h)s.state=-s.state;const llr=val('drift')*s.state*dt+val('noise')*Math.sqrt(dt)*normal();s.perfect+=llr;s.norm=glazeUpdate(s.norm,ha)+llr;s.n++;if(Math.sign(s.perfect)===s.state)s.pOK++;if(Math.sign(s.norm)===s.state)s.nOK++;s.trace.push([s.t,s.perfect,s.norm,s.state]);if(s.trace.length>520)s.trace.shift();},s=>{bg(s);const c=s.ctx,W=680,X=60;if(!s.trace.length)return;const t0=s.trace[0][0],t1=Math.max(t0+1,s.trace[s.trace.length-1][0]);const x=t=>X+(t-t0)/(t1-t0)*W,CLIP=6,y=v=>215-Math.max(-CLIP,Math.min(CLIP,v))/CLIP*150;let i0=0;for(let i=1;i<=s.trace.length;i++){if(i===s.trace.length||s.trace[i][3]!==s.trace[i0][3]){const up=s.trace[i0][3]>0,xa=x(s.trace[i0][0]),xb=x(s.trace[i-1][0]);const w=Math.max(1,xb-xa);c.fillStyle=up?'rgba(216,189,130,.15)':'rgba(143,184,166,.15)';c.fillRect(xa,44,w,351);c.fillStyle=up?'#d8bd82':'#8fb8a6';c.fillRect(xa,36,w,6);if(w>26){c.font='17px Arial';c.fillText(up?'\u2191':'\u2193',(xa+xb)/2-5,64);c.font='12px Arial'}i0=i}}c.strokeStyle='#8fb8a6';c.setLineDash([4,6]);c.beginPath();c.moveTo(X,y(0));c.lineTo(X+W,y(0));c.stroke();c.setLineDash([]);[[1,'#d8bd82'],[2,'#c9922f']].forEach(([k,col])=>{c.strokeStyle=col;c.lineWidth=2;c.beginPath();s.trace.forEach((p,i)=>i?c.lineTo(x(p[0]),y(p[k])):c.moveTo(x(p[0]),y(p[k])));c.stroke()});c.fillStyle='#c3cfc4';c.fillText('shaded bands show which source is active',X,28);c.fillStyle='#c3cfc4';c.fillText('favours source A',X,y(0)-8);c.fillText('favours source B',X,y(0)+18);const p=s.n?Math.round(100*s.pOK/s.n):0,nn=s.n?Math.round(100*s.nOK/s.n):0;c.font='10px Arial';c.fillStyle='#d8bd82';c.fillText('NO DISCOUNTING (CLASSICAL)',X,404);c.fillStyle='#c9922f';c.fillText('DISCOUNTING THE PAST',X+340,404);c.font='24px Georgia';c.fillStyle='#d8bd82';c.fillText(p+'% accurate',X,426);c.fillStyle='#c9922f';c.fillText(nn+'% accurate',X+340,426);c.font='12px Arial';$('decisions-metric').textContent=`Accuracy: ${p}% without discounting, ${nn}% with discounting`});
 // Changing evidence or boundaries restarts trajectories so one run has one model.
 ['drift','noise','world-change','assumed-change'].forEach(id=>$(id).addEventListener('input',()=>{sims.decisions.reset(sims.decisions);sims.decisions.draw(sims.decisions)}));
-const PATCHES=5,FORAGERS=25,LEAVE=-1,START=1.1;
-function patchX(i){return 90+i*(620/(PATCHES-1))}
-setup('collective',s=>{s.t=0;s.patches=Array.from({length:PATCHES},()=>({resource:.55+Math.random()*.45}));s.agents=Array.from({length:FORAGERS},(_,i)=>({patch:i%PATCHES,belief:START,travel:0,from:0,trace:[]}));s.lastLeave=new Array(PATCHES).fill(-99);s.gaps=[]},(s,dt)=>{s.t+=dt;const g=val('coupling'),sigma=val('forage-noise'),travelTime=val('patch-travel');
- const here=s.patches.map((_,p)=>s.agents.filter(a=>a.travel<=0&&a.patch===p));
- // Patches deplete while occupied and recover once abandoned.
- s.patches.forEach((patch,p)=>{patch.resource=Math.max(0,Math.min(1,patch.resource-.055*here[p].length*dt+(here[p].length?0:.12*dt)))});
- const means=here.map(group=>mean(group.map(a=>a.belief)));
- for(const a of s.agents){
-  if(a.travel>0){a.travel-=dt;a.trace.push(null);if(a.travel<=0){a.belief=START;a.trace.length=0}continue}
-  const drift=2*s.patches[a.patch].resource-1.15;
-  a.belief=socialBeliefStep(a.belief,means[a.patch],drift,g,sigma,dt,normal());
-  a.trace.push(a.belief);
-  if(a.belief<=LEAVE){
-   const others=[...Array(PATCHES).keys()].filter(p=>p!==a.patch);
-   const gap=s.t-s.lastLeave[a.patch];if(gap<8)s.gaps.push(gap);s.lastLeave[a.patch]=s.t;
-   if(s.gaps.length>120)s.gaps.shift();
-   a.from=a.patch;a.patch=others[Math.floor(Math.random()*others.length)];a.travel=travelTime;
-  }
- }
-
- for(const a of s.agents)if(a.trace.length>240)a.trace.shift();
-},s=>{bg(s);const c=s.ctx;const here=s.patches.map((_,p)=>s.agents.filter(a=>a.travel<=0&&a.patch===p));
- c.fillStyle='#c3cfc4';c.fillText('PATCHES',60,25);
- s.patches.forEach((patch,p)=>{const x=patchX(p),top=70,h=90;
-  c.strokeStyle='#567064';c.lineWidth=1.5;c.beginPath();c.roundRect(x-52,top,104,h,8);c.stroke();
-  c.fillStyle='#8fb8a628';c.beginPath();c.roundRect(x-52,top+h*(1-patch.resource),104,h*patch.resource,8);c.fill();
-  here[p].forEach((a,i)=>{c.fillStyle=colors[a.patch%4];c.beginPath();c.arc(x-38+(i%7)*13,top+16+Math.floor(i/7)*20,4.2,0,TAU);c.fill()});
-  c.fillStyle='#c3cfc4';c.fillText(`${here[p].length}`,x-4,top+h+16)});
- // foragers in transit
- s.agents.filter(a=>a.travel>0).forEach(a=>{const u=1-a.travel/Math.max(.01,val('patch-travel'));const x=patchX(a.from)+(patchX(a.patch)-patchX(a.from))*u;c.fillStyle='#d8bd82';c.globalAlpha=.55;c.beginPath();c.arc(x,196,3.6,0,TAU);c.fill();c.globalAlpha=1});
- c.fillStyle='#c3cfc4';c.fillText('IN TRANSIT',60,200);
- c.fillText('BELIEF THAT THE PATCH IS STILL WORTH IT',60,240);
- const yb=v=>330-v*52;
- c.strokeStyle='#d8bd82';c.setLineDash([4,6]);c.beginPath();c.moveTo(60,yb(LEAVE));c.lineTo(740,yb(LEAVE));c.stroke();c.setLineDash([]);
- c.fillText('leave',60,yb(LEAVE)+16);
- s.agents.forEach(a=>{c.strokeStyle=colors[a.patch%4];c.globalAlpha=.8;c.lineWidth=1.6;c.beginPath();let pen=false;a.trace.forEach((v,i)=>{if(v===null){pen=false;return}const x=60+i/239*680,y=yb(v);pen?c.lineTo(x,y):c.moveTo(x,y);pen=true});c.stroke()});
- c.globalAlpha=1;c.fillStyle='#c3cfc4';
- const groups=here.filter(gr=>gr.length>1);
- if(groups.length){const inst=mean(groups.map(gr=>stdev(gr.map(a=>a.belief))));s.spread=s.spread===undefined?inst:.96*s.spread+.04*inst}
- const pct=s.gaps.length>8?Math.round(100*s.gaps.filter(x=>x<.5).length/s.gaps.length):0;
- $('collective-metric').textContent=`${FORAGERS} foragers · ${PATCHES} patches · within-patch belief spread ${(s.spread??0).toFixed(2)} · ${pct}% of departures follow another within 0.5 s`});
 // Social escape: group of accumulators with social discounting alpha (dimensionless caricature).
 const E={th:1.6,mu:1,sig:.8,lam:3,kick:.35,T:6,AX0:60,AX1:540,AY0:44,AY1:206};
 function escapeMC(N,alpha,trials=400,dt=.02){
