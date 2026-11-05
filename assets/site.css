@@ -60,3 +60,5 @@
 @media(max-width:600px){.faculty-contact{display:block}.portrait{width:100%;max-width:380px;margin:0 0 16px}.faculty-contact p{font-size:13px;line-height:1.7;margin:0 0 16px}.faculty-contact .affiliations{font-size:12px}}
 
 .course-thumb{display:block;width:100%;height:auto;aspect-ratio:3/2;max-height:240px;object-fit:cover;border:1px solid var(--line);margin:0 0 20px}
+
+.course-thumb{aspect-ratio:5/2;max-height:none}
