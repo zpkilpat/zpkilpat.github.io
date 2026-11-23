@@ -81,3 +81,4 @@
 svg .acc{fill:var(--acc,#8a6b21);stroke:none}
 svg .accs{stroke:var(--acc,#8a6b21)}
 @media(max-width:600px){.publication{grid-template-columns:43px minmax(0,1fr)}.pub-themes{grid-column:2;flex-direction:row;flex-wrap:wrap;gap:6px 16px}.pub-theme svg{width:20px;height:20px}.theme-chip{font-size:12px;padding:5px 10px 5px 7px}}
+.preprints .pub-themes{margin-top:10px}.preprints .pub-theme span{display:inline;margin-top:0;font-size:12px}
